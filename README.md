@@ -41,52 +41,62 @@ Description: This is a demo pipeline project.
 9.     Pipeline Script:
 
     
-stages{
-    stage("clone"){
-        steps{
-            git (
-                branch: "main", 
-                url: 'https://github.com/mahfuzrubel0660/project-2.git'
-            )
-        }
-    }
-    stage("testing"){
-        steps{
-            echo "Testing"
-        }
-    }
-    stage("build the image"){
-        steps{
-            script{
-                sh "docker build -t mahfuzrubel0660/app2 ."
+pipeline{
+    agent any
+
+    stages{
+        stage("clone"){
+            steps{
+                git (
+                    branch: "main", 
+                    url: 'https://github.com/mahfuzrubel0660/project-2.git'
+                )
             }
         }
-    }
-    stage("stop the container"){
-        steps{
-            script{
-                sh "docker stop app2"
+        stage("testing"){
+            steps{
+                echo "Testing"
             }
         }
-    }
-    stage("remove the container"){
-        steps{
-            script{
-                sh "docker rm app2"
+        stage("build the image"){
+            steps{
+                script{
+                    sh "docker build -t mahfuzrubel0660/app2 ."
+                }
             }
         }
-    }
-    
-    stage("run the docker container"){
-        steps{
-            script{
-                sh "docker run --name app2 -p 8002:80 -d mahfuzrubel0660/app2"
+        stage("stop the container"){
+            steps{
+                catchError(buildResult: 'SUCCESS', stageResult: 'FAILURE'){
+                    script{
+                        sh "docker stop app2"
+                    }
+                }
+                
             }
         }
+        stage("remove the container"){
+            steps{
+                catchError(buildResult: 'SUCCESS', stageResult: 'FAILURE'){
+                    script{
+                        sh "docker rm app2"
+
+                    }
+                }
+                    
+            }
+        }
+        
+        stage("run the docker container"){
+            steps{
+                script{
+                    sh "docker run --name app2 -p 8002:80 -d mahfuzrubel0660/app2"
+                }
+            }
+        }
+        
     }
-    
-}}
-      
+}   
 
 
 
