@@ -1,3 +1,9 @@
+<<<<<<< HEAD
+=======
+
+pipeline{
+    agent any
+>>>>>>> 4f5304171b4ca0e693512ce41d4655b026f41d58
 
 
             }
@@ -14,7 +20,25 @@
                 }
             }
         }
+<<<<<<< HEAD
 
+=======
+        stage("stop the container"){
+            steps{
+                script{
+                    sh "docker stop app2"
+                }
+            }
+        }
+        stage("remove the container"){
+            steps{
+                script{
+                    sh "docker rm app2"
+                }
+            }
+        }
+        
+>>>>>>> 4f5304171b4ca0e693512ce41d4655b026f41d58
         stage("run the docker container"){
             steps{
                 script{
@@ -27,3 +51,7 @@
 }
 
 
+<<<<<<< HEAD
+=======
+
+>>>>>>> 4f5304171b4ca0e693512ce41d4655b026f41d58
