@@ -1,3 +1,4 @@
+
 pipeline{
     agent any
 
@@ -22,6 +23,20 @@ pipeline{
                 }
             }
         }
+        stage("stop the container"){
+            steps{
+                script{
+                    sh "docker stop app2"
+                }
+            }
+        }
+        stage("remove the container"){
+            steps{
+                script{
+                    sh "docker rm app2"
+                }
+            }
+        }
         
         stage("run the docker container"){
             steps{
@@ -33,3 +48,6 @@ pipeline{
         
     }
 }
+
+
+
