@@ -1,13 +1,5 @@
-pipeline{
-    agent any
 
-    stages{
-        stage("clone"){
-            steps{
-                git (
-                    branch: "main", 
-                    url: 'https://github.com/mahfuzrubel0660/project-2.git'
-                )
+
             }
         }
         stage("testing"){
@@ -22,7 +14,7 @@ pipeline{
                 }
             }
         }
-        
+
         stage("run the docker container"){
             steps{
                 script{
@@ -30,6 +22,8 @@ pipeline{
                 }
             }
         }
-        
+
     }
 }
+
+
