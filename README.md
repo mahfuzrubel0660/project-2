@@ -40,10 +40,16 @@ Description: This is a demo pipeline project.
 
 9.     Pipeline Script:
 
+
     
 pipeline{
+    environment {
+        DOCKER_HUB_USERNAME = 'mahfuzrubel0660'
+        DOCKER_HUB_PASSWORD = 'dckr_pat_c_RqK-lkXbJ7CplIWuoX_L0Zc-s'
+        IMAGE_NAME = 'mahfuzrubel0660/app2'
+        IMAGE_TAG = 'latest'
+    }
     agent any
-
     stages{
         stage("clone"){
             steps{
@@ -62,6 +68,20 @@ pipeline{
             steps{
                 script{
                     sh "docker build -t mahfuzrubel0660/app2 ."
+                }
+            }
+        }
+        stage('Push to Docker Hub') {
+            steps {
+                script {
+                    // Log in to Docker Hub
+                    sh "docker login -u ${DOCKER_HUB_USERNAME} -p ${DOCKER_HUB_PASSWORD}"
+
+                    // Tag the built image
+                    sh "docker tag ${IMAGE_NAME}:${IMAGE_TAG} ${DOCKER_HUB_USERNAME}/${IMAGE_NAME}:${IMAGE_TAG}"
+
+                    // Push the tagged image to Docker Hub
+                    sh "docker push ${IMAGE_NAME}:${IMAGE_TAG}"
                 }
             }
         }
@@ -86,7 +106,6 @@ pipeline{
                     
             }
         }
-        
         stage("run the docker container"){
             steps{
                 script{
@@ -96,8 +115,7 @@ pipeline{
         }
         
     }
-}   
-
+}
 
 
  
